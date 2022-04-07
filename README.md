@@ -3,7 +3,6 @@
 Initially just a list of rules to follow while writing Go code, which are not covered
 by already existing linters etc.
 
-
 ## The happy path is left-aligned
 
 https://medium.com/@matryer/line-of-sight-in-code-186dd7cdea88
