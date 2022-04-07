@@ -89,3 +89,74 @@ Good:
 +  return f.id
 +}
 ```
+
+## Struct fields are validated if user may put bad values into them or not initialize them
+
+This is a defensive programming approach to avoid misuse or potential panics of programs.
+
+Bad:
+
+```diff
+-type Doer interface {
+-  Do()
+-}
+-
+-type Foo struct {
+-  Doer Doer
+-}
+-
+-func (f *foo) Execute() {
+-  f.Doer.Do()
+-}
+```
+
+Good:
+
+```diff
++type Doer interface {
++  Do()
++}
++
++type Foo interface {
++  Execute()
++}
++
++type foo struct {
++  doer Doer
++}
++
++func NewFoo(doer Doer) (Foo, error) {
++  if doer == nil {
++    return nil, fmt.Errorf("doer can't be nil")
++  }
++
++  return &foo{
++    doer: doer,
++  }, nil
++}
++
++func (f *foo) Execute() {
++  f.doer.Do()
++}
+```
+
+## Short if notation should be preferred
+
+It reduces lines of code and scope of variables.
+
+Bad:
+
+```diff
+-err := Foo()
+-if err != nil {
+-  ...
+-}
+```
+
+Good:
+
+```diff
++if err := Foo(); err != nil {
++  ...
++}
+```
