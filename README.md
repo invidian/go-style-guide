@@ -28,3 +28,64 @@ Good:
 +  return foo, nil
 +}
 ```
+
+## Chained interfaces are not replaceable
+
+Bad:
+
+```diff
+- type Foo interface {
+-   Print() string
+- 	Say() string
+-
+-   // Don't do this.
+-   Bar() Bar
+- }
+
+```
+
+Good:
+
+```diff
++ type Foo interface {
++   Print() string
++   Say() string
++ }
++
++ type Printer interface {
++   Print() string
++ }
++
++ func NewBar(f Printer) Bar {
++   return &bar{}
++ }
+```
+
+## Mixing exported fields and methods in struct makes it impossible to put it behind an interface on client side
+
+Bad:
+
+```diff
+-type Foo struct {
+-  ID string
+-}
+-
+-func (f *Foo) Do() error {
+-  return nil
+-}
+```
+
+Good:
+
+```diff
++type Foo struct {
++  id string
++
++func (f *Foo) Do() error {
++  return nil
++}
++
++func (f *Foo) ID() string {
++  return f.id
++}
+```
