@@ -90,6 +90,26 @@ Good:
 +}
 ```
 
+Note: If this problem affects library struct you use, it can be workaround using the following method:
+
+```go
+type Foo struct {
+  ID string
+}
+
+func (f *Foo) Do() error {
+  return nil
+}
+
+type FooWrapper struct {
+	*Foo
+}
+
+func (fw *FooWrapper) GetID() string {
+	return fw.ID
+}
+```
+
 ## Struct fields are validated if user may put bad values into them or not initialize them
 
 This is a defensive programming approach to avoid misuse or potential panics of programs.
@@ -159,4 +179,26 @@ Good:
 +if err := Foo(); err != nil {
 +  ...
 +}
+```
+
+## Define exported objects before unexported ones
+
+As a reader, you are more likely to search for exported structs and functions in the code,
+as they are higher level as the unexported functions. To make it convinient for the reader,
+exported structs, functions etc should be placed at the top of the file.
+
+Bad:
+
+```diff
+-func foo() {}
+-
+-func Bar() {}
+```
+
+Good:
+
+```diff
++func Bar() {}
++
++func foo() {}
 ```
