@@ -202,3 +202,34 @@ Good:
 +
 +func foo() {}
 ```
+
+## Don't use 'else'
+
+Most of the time 'else' in 'if' statement can be avoided by either shifting the logic or splitting
+the code into functions. This reduces the cognitive complexity while reading code, as instead of
+having a path X when Y happens and path Z when Y is negated, you only have path X which executes always
+and path Z when Y happens.
+
+More on that: https://medium.com/@jamousgeorges/dont-use-else-66ee163deac3
+
+Bad:
+
+```diff
+- var bar int
+-
+- if foo == 5 {
+-   bar = 2
+- } else {
+-   bar = 3
+- }
+```
+
+Good:
+
+```diff
++ bar := 3
++
++ if foo != 5 {
++   bar = 2
++ }
+```
