@@ -233,3 +233,21 @@ Good:
 +   bar = 2
 + }
 ```
+
+## Don't use spaces in subtest names
+
+`go test` on it's output converts space characters into `_`, so when using spaces in the test names,
+you can not just take the segment of the test name and grep for it to find the beginning of the test.
+
+Using underscores as separators makes source and output consistent while does not hurt the readability.
+
+Bad:
+```diff
+-  t.Run("when shopping cart is empty", func(t *testing.T) {
+```
+
+Good:
+
+```diff
++  t.Run("when_shopping_cart_is_empty", func(t *testing.T) {})
+```
